@@ -39,11 +39,14 @@ run the following command after cloning the repository:
    
     ```bash
 >  docker build -t app7 .
+ ```
+ ```bash
 >  docker run -p 8000:8000 -v /home/dbfolder/:/db app7
+```
  navigate to : http://127.0.0.1:8000 
 - \scraping : to run the scraping service
 - \get_data : to retreive data from the db
-```
+
 
     
 # Conclusion :
