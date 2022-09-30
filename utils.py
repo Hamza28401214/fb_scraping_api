@@ -5,7 +5,7 @@ pat = str(Path(__file__).parent)
 
 
 def to_db(df, name):
-    con = sqlite3.connect(pat + '\\database//scraping_data.db')
+    con = sqlite3.connect('database//scraping_data.db')
     df.to_sql(con=con, name=str(name), if_exists='replace')
     con.close()
     return
