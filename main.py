@@ -23,10 +23,9 @@ async def scrape():
     myWebsite = _webdirver_()
     # get page details
     about = myWebsite.get_about()
-    time.sleep(1)
+    time.sleep(5)
     products = myWebsite.get_products()
 
-    # myWebsite.tearDown()
     # prepare data
     df_about = pd.DataFrame(about)
     df_products = pd.DataFrame(products)
@@ -37,12 +36,12 @@ async def scrape():
     to_db(df_about, 'about')
     to_db(df_products, 'products')
     logging.info("data successfully stored in db")
-    return {"message": "Scraping completed"}
+    return {"message": "Scraping completed..."}
 
 
 @app.get("/get_data")
 async def from_db():
-    con = sqlite3.connect(pat + '\\database//scraping_data.db')
+    con = sqlite3.connect('database//scraping_data.db')
     res = pd.read_sql_query("SELECT * from about", con)
     res.drop('index', axis=1, inplace=True)
     print(res['likes'])
