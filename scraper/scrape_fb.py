@@ -1,17 +1,26 @@
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 import time
-import logging
+from pathlib import Path
 
+# from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 # setup chrome driver and get url
 
+p = str(Path(__file__).parent)
 
 
-
+# def get_browser():
+#     options = webdriver.ChromeOptions()
+#     browser = webdriver.Remote(
+#             command_executor=f"http://localhost:4444/wd/hub",
+#             desired_capabilities=DesiredCapabilities.CHROME,
+#             options=options,
+#         )
+#     return browser
 
 
 class _webdirver_:
-
 
     def __init__(self):
         self.set_up()
@@ -19,14 +28,28 @@ class _webdirver_:
         # self.get_products()
 
     def set_up(self):
-        self.driver = webdriver.Chrome(ChromeDriverManager().install())
+        chrome_options = Options()
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        self.driver = webdriver.Chrome(ChromeDriverManager(path=p).install(), chrome_options=chrome_options)
+        # chrome_path = str(p)+'/chromedriver.exe'
+        # self.driver = webdriver.Chrome(executable_path=chrome_path)
+        # self.driver = webdriver.Chrome(ChromeDriverManager().install())
+        # self.driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
+        # self.driver = webdriver.Remote(command_executor=f"http://localhost:4444/wd/hub",
+        #     desired_capabilities=DesiredCapabilities.CHROME)
+        # self.driver = webdriver.Chrome()
         self.driver.maximize_window()
+
     def get_about(self):
         driver = self.driver
-        driver.get("https://www.facebook.com/RealMadrid/")
-        driver.find_elements_by_xpath(
-            "/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div[4]/div[2]/div/div[1]/div[2]/div[1]/div/div/div/div[1]/div/div/div/div/div/span/div/div[2]/div/div[2]/div/div/a/span")[
-            0].click()
+
+        driver.get("https://www.facebook.com/RealMadrid/about")
+        # time.sleep(5)
+        # driver.find_elements_by_xpath(
+        #     "/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div[4]/div[2]/div/div[1]/div[2]/div[1]/div/div/div/div[1]/div/div/div/div/div/span/div/div[2]/div/div[2]/div/div/a/span")[
+        #     0].click()
         time.sleep(3)
         try:
             driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -59,6 +82,7 @@ class _webdirver_:
         return about
 
     def get_products(self):
+
         self.driver.get("https://www.facebook.com/RealMadrid/shop/?ref_code=mini_shop_page_card_cta&ref_surface=page")
         time.sleep(2)
         ur = self.driver.find_elements_by_xpath(
@@ -81,5 +105,5 @@ class _webdirver_:
         self.driver.close()
         return article
 
-    def tearDown(self):
-        self.driver.close()
+    # def quit_browser(self):
+    #     self.driver.close()
